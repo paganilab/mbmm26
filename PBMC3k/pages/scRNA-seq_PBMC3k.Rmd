@@ -661,16 +661,11 @@ Seurat allows for interactive plots taking advantge of **R's plotly** graphing l
 
 ```{r}
 # Instantiate an interactive plot using FeaturePlot() and then pass it to HoverLocator()
+# Move the cursor over the cells to reveal metadata info 
 plot <- FeaturePlot(pbmc, features = "MS4A1")
 HoverLocator(plot = plot, information = FetchData(pbmc, vars = c("ident", "seurat_clusters", "nFeature_RNA", "percent.mt")))
 ```
 
-
-```{r}
-plot <- FeaturePlot(pbmc, features = "MS4A1")
-CellSelector(plot = plot)
-
-```
 
 
 ```{r}
@@ -680,20 +675,33 @@ cell.locator <- CellSelector(plot = plot)
 
 
 ```{r}
+# How many cells did we capture?
 length(cell.locator)
+head(cell.locator)
 ```
 
 
 ```{r}
+# Annotates the captured cells in the Ident as 'SelectedCells'
 plot <- FeaturePlot(pbmc, features = "MS4A1")
 pbmc.small <- CellSelector(plot = plot, object=pbmc, ident='SelectedCells')
 ```
 
+```{r}
+dim(pbmc.small)
+```
+
+
 
 ```{r}
-
+# Adds information in the metadata 
 pbmc.small$selected_cells <- Idents(pbmc.small)
-pbmc.small[[]] %>% group_by(selected_cells) %>% count() %>% ungroup()
+```
+
+
+```{r}
+# Group by the new metadata column
+pbmc.small[[]] %>% dplyr::group_by(selected_cells) %>% dplyr::count() %>% ungroup()
 
 ```
 
