@@ -780,7 +780,7 @@ ego <- enrichGO(gene = genes_up_recur,
 head(ego@result,2)
 ```
 
-```{r, eval=TRUE, include=FALSE}
+```{r, eval=TRUE, echo=FALSE}
 head(ego@result,2) %>% kbl() %>% kable_styling()
 ```
 
@@ -833,7 +833,7 @@ ids <- clusterProfiler::bitr(genes_up_recur, fromType="SYMBOL", toType="ENTREZID
 head(kegg,4)
 ```
 
-```{r, include=FALSE}
+```{r, echo=FALSE}
 head(kegg,4) %>% kbl() %>% kable_styling()
 ```
 

@@ -671,6 +671,8 @@ plot <- FeaturePlot(pbmc, features = "MS4A1")
 CellSelector(plot = plot)
 
 ```
+
+
 ```{r}
 plot <- FeaturePlot(pbmc, features = "MS4A1")
 cell.locator <- CellSelector(plot = plot)
@@ -678,7 +680,7 @@ cell.locator <- CellSelector(plot = plot)
 
 
 ```{r}
-length(cells.located)
+length(cell.locator)
 ```
 
 
@@ -686,6 +688,8 @@ length(cells.located)
 plot <- FeaturePlot(pbmc, features = "MS4A1")
 pbmc.small <- CellSelector(plot = plot, object=pbmc, ident='SelectedCells')
 ```
+
+
 ```{r}
 
 pbmc.small$selected_cells <- Idents(pbmc.small)
@@ -697,7 +701,7 @@ pbmc.small[[]] %>% group_by(selected_cells) %>% count() %>% ungroup()
 pbmc.small@meta.data %>% head()
 ```
 
-```{r, include=FALSE}
+```{r, echo=FALSE}
 pbmc.small@meta.data %>% head() %>% kbl() %>% kable_styling()
 ```
 

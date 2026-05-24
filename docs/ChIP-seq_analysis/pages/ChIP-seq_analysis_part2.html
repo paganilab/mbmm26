@@ -859,14 +859,14 @@ $GRADE_COLON_AND_RECTAL_CANCER_DN
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a look at results</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>fgseaRes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre class="bordered"><code>                            pathway       pval       padj        ES       NES
-                             &lt;char&gt;      &lt;num&gt;      &lt;num&gt;     &lt;num&gt;     &lt;num&gt;
-1: GRADE_COLON_AND_RECTAL_CANCER_UP 0.02982456 0.05964912 0.3032790 1.5801273
-2: GRADE_COLON_AND_RECTAL_CANCER_DN 0.46594982 0.46594982 0.2120043 0.9881897
+<pre class="bordered"><code>                            pathway       pval      padj        ES       NES
+                             &lt;char&gt;      &lt;num&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;
+1: GRADE_COLON_AND_RECTAL_CANCER_UP 0.05045045 0.1009009 0.3032790 1.5225471
+2: GRADE_COLON_AND_RECTAL_CANCER_DN 0.54395604 0.5439560 0.2120043 0.9451061
    nMoreExtreme  size                                  leadingEdge
           &lt;num&gt; &lt;int&gt;                                       &lt;list&gt;
-1:           16    66 PLAU,TCF7,CD46,GTF3A,HNRNPA2B1,TFB1M,...[17]
-2:          259    41  CHST15,TOX2,SASH1,TGFBR3,TRPS1,GPC1,...[12]</code></pre>
+1:           27    66 PLAU,TCF7,CD46,GTF3A,HNRNPA2B1,TFB1M,...[17]
+2:          296    41  CHST15,TOX2,SASH1,TGFBR3,TRPS1,GPC1,...[12]</code></pre>
 </div>
 </div>
 <p>Plot GSEA results</p>
@@ -1331,6 +1331,61 @@ $genes_up_recur5
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ego<span class="sc">@</span>result, <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">ID</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Description</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">GeneRatio</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">BgRatio</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">RichFactor</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">FoldEnrichment</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">zScore</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">pvalue</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p.adjust</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">qvalue</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">geneID</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">GO:0050673</td>
+<td style="text-align: left;">GO:0050673</td>
+<td style="text-align: left;">epithelial cell proliferation</td>
+<td style="text-align: left;">30/354</td>
+<td style="text-align: left;">496/18860</td>
+<td style="text-align: right;">0.0604839</td>
+<td style="text-align: right;">3.222389</td>
+<td style="text-align: right;">6.937165</td>
+<td style="text-align: right;">0e+00</td>
+<td style="text-align: right;">0.0000786</td>
+<td style="text-align: right;">0.0000677</td>
+<td style="text-align: left;">ERRFI1/JUN/TGFBR3/NRP1/DRD2/FLT1/DACH1/BMP4/RASGRF1/CDH13/SOX9/MAP2K2/OSR1/FSHR/SCG2/PPP1R16B/SULF2/AREG/DAB2/FGF1/PRDM1/BMPER/IGFBP3/WNT16/FAM3C/TRIM24/ZNF703/HAS2/CASK/MAGED1</td>
+<td style="text-align: right;">30</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GO:0060485</td>
+<td style="text-align: left;">GO:0060485</td>
+<td style="text-align: left;">mesenchyme development</td>
+<td style="text-align: left;">22/354</td>
+<td style="text-align: left;">347/18860</td>
+<td style="text-align: right;">0.0634006</td>
+<td style="text-align: right;">3.377782</td>
+<td style="text-align: right;">6.183054</td>
+<td style="text-align: right;">7e-07</td>
+<td style="text-align: right;">0.0014762</td>
+<td style="text-align: right;">0.0012702</td>
+<td style="text-align: left;">TGFBR3/NRP1/TBX3/BMP4/NEDD4/SOX9/OSR1/SEMA4F/SLC39A10/ZFP64/TGFBR2/ROBO2/GSK3B/WWTR1/DAB2/MSX2/PTK7/SEMA3C/SEMA3A/WNT16/ZNF703/HAS2</td>
+<td style="text-align: right;">22</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Let’s now plot the results with a ranked dotplot. Gene ontology terms are ranked from the top to the bottom based on the Gene Ratio (number of genes intersecting the term / total number of unique genes provided). The significance of the enrichment (p.adjust) is depicted by the color, whilst the size of the dot represents the number of genes in our geneset (e.g.&nbsp;up-regulated genes) that overlap the specific GO term.</p>
 <p>We can also create a directed acyclic graph (DAG)</p>
 <div class="cell" data-layout-align="center">
@@ -1391,6 +1446,101 @@ $complete.dag
 </div>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(kegg, <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">category</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">subcategory</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">ID</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Description</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">GeneRatio</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">BgRatio</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">RichFactor</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">FoldEnrichment</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">zScore</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">pvalue</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p.adjust</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">qvalue</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">geneID</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">hsa05210</td>
+<td style="text-align: left;">Human Diseases</td>
+<td style="text-align: left;">Cancer: specific types</td>
+<td style="text-align: left;">hsa05210</td>
+<td style="text-align: left;">Colorectal cancer</td>
+<td style="text-align: left;">9/189</td>
+<td style="text-align: left;">87/9382</td>
+<td style="text-align: right;">0.1034483</td>
+<td style="text-align: right;">5.135194</td>
+<td style="text-align: right;">5.555942</td>
+<td style="text-align: right;">0.0000598</td>
+<td style="text-align: right;">0.0102465</td>
+<td style="text-align: right;">0.0083362</td>
+<td style="text-align: left;">3725/1647/1630/5605/7048/2932/374/5295/6932</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">hsa04390</td>
+<td style="text-align: left;">Environmental Information Processing</td>
+<td style="text-align: left;">Signal transduction</td>
+<td style="text-align: left;">hsa04390</td>
+<td style="text-align: left;">Hippo signaling pathway</td>
+<td style="text-align: left;">12/189</td>
+<td style="text-align: left;">157/9382</td>
+<td style="text-align: right;">0.0764331</td>
+<td style="text-align: right;">3.794156</td>
+<td style="text-align: right;">5.062257</td>
+<td style="text-align: right;">0.0000751</td>
+<td style="text-align: right;">0.0102465</td>
+<td style="text-align: right;">0.0083362</td>
+<td style="text-align: left;">652/1496/7048/2932/25937/374/6932/2246/5054/51384/5520/7534</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">hsa04012</td>
+<td style="text-align: left;">Environmental Information Processing</td>
+<td style="text-align: left;">Signal transduction</td>
+<td style="text-align: left;">hsa04012</td>
+<td style="text-align: left;">ErbB signaling pathway</td>
+<td style="text-align: left;">8/189</td>
+<td style="text-align: left;">86/9382</td>
+<td style="text-align: right;">0.0930233</td>
+<td style="text-align: right;">4.617694</td>
+<td style="text-align: right;">4.832366</td>
+<td style="text-align: right;">0.0003243</td>
+<td style="text-align: right;">0.0238354</td>
+<td style="text-align: right;">0.0193918</td>
+<td style="text-align: left;">3725/818/5605/8440/2932/374/685/5295</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">hsa00053</td>
+<td style="text-align: left;">Metabolism</td>
+<td style="text-align: left;">Carbohydrate metabolism</td>
+<td style="text-align: left;">hsa00053</td>
+<td style="text-align: left;">Ascorbate and aldarate metabolism</td>
+<td style="text-align: left;">5/189</td>
+<td style="text-align: left;">31/9382</td>
+<td style="text-align: right;">0.1612903</td>
+<td style="text-align: right;">8.006486</td>
+<td style="text-align: right;">5.602462</td>
+<td style="text-align: right;">0.0003492</td>
+<td style="text-align: right;">0.0238354</td>
+<td style="text-align: right;">0.0193918</td>
+<td style="text-align: left;">54578/7365/7364/2990/219</td>
+<td style="text-align: right;">5</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dotplot</span>(kegg, <span class="at">showCategory =</span> <span class="dv">10</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="fu">paste0</span>(<span class="st">"Dotplot for GO - "</span>, ontology, <span class="st">" enrichment"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
