@@ -58,6 +58,7 @@ library(dplyr)
 library(Seurat)
 library(patchwork)
 library(ggplot2)
+library(kableExtra)
 ```
 
 ```{r}
@@ -177,6 +178,12 @@ To provide functional annotation to the groups of cells, we assign a cell type t
 ```{r}
 levels(pbmc)
 head(Idents(pbmc))
+```
+
+```{r}
+
+pbmc@meta.data %>% head()
+
 ```
 
 
@@ -432,7 +439,7 @@ pbmc@assays$RNA[[]] %>%
 
 ### How do we add information on *Cell Identities* to the Cell Metadata?
 
-```{r, echo=FALSE}
+```{r, echo=TRUE}
 # Add an annotation 
 pbmc[['identities']] <- Idents(pbmc)
 pbmc@meta.data %>% head(2)
@@ -487,6 +494,14 @@ pbmc$identities <- NULL
 
 head(pbmc@meta.data)
 ```
+
+```{r}
+# Re-import identities column
+
+pbmc[['identities']] <- Idents(pbmc)
+
+```
+
 
 ***
 
@@ -609,14 +624,14 @@ Let's create a dummy metadata variable. This could represent different patientID
 pbmc$groups <- sample(c("group1", "group2"), size = ncol(pbmc), replace = TRUE)
 
 # Tabulate data for clusters and groups
-table(pbmc$groups, pbmc$annotation)
+table(pbmc$groups, pbmc$identities)
 ```
 
 We can plot the number of cells per group
 ```{r}
 pbmc@meta.data %>% 
-  dplyr::group_by(annotation) %>%
-  ggplot(aes(annotation, fill=groups)) + geom_bar()
+  dplyr::group_by(identities) %>%
+  ggplot(aes(identities, fill=groups)) + geom_bar()
 
 # #Using geom_bar(stat='identity') the bar heights will be given by the y values we pass rather than the counts
 # pbmc@meta.data %>% 
@@ -629,11 +644,11 @@ What if we want to calculate the percentage of group_1 and group_2 in each clust
 
 ```{r}
 pbmc@meta.data %>% 
-  dplyr::count(annotation,groups) %>%
-  dplyr::group_by(annotation) %>%
+  dplyr::count(identities,groups) %>%
+  dplyr::group_by(identities) %>%
   dplyr::mutate(prop=prop.table(n)) %>%
   #head()
-  ggplot(aes(annotation, prop, fill=groups)) + geom_bar(stat='identity')
+  ggplot(aes(identities, prop, fill=groups)) + geom_bar(stat='identity')
 ```
 
 
@@ -676,7 +691,14 @@ pbmc.small <- CellSelector(plot = plot, object=pbmc, ident='SelectedCells')
 pbmc.small$selected_cells <- Idents(pbmc.small)
 pbmc.small[[]] %>% group_by(selected_cells) %>% count() %>% ungroup()
 
-pbmc.small@meta.data
+```
+
+```{r, eval=FALSE}
+pbmc.small@meta.data %>% head()
+```
+
+```{r, include=FALSE}
+pbmc.small@meta.data %>% head() %>% kbl() %>% kable_styling()
 ```
 
 
@@ -827,14 +849,14 @@ FeaturePlot(object = pbmc, features = c("CST3","score.pc1"), reduction='umap')
 
 
 ```{r}
-DimPlot(pbmc, split.by = 'annotation', ncol=3)
+DimPlot(pbmc, split.by = 'identities', ncol=3)
 ```
 
 
 ### Pseudobulk analysis
 
 ```{r}
-bulk <- AggregateExpression(pbmc, group.by = "annotation", return.seurat = TRUE)
+bulk <- AggregateExpression(pbmc, group.by = "identities", return.seurat = TRUE)
 Cells(bulk)
 ```
 
