@@ -1,0 +1,48 @@
+project:
+  type: website
+  output-dir: docs # For pages publishing
+
+# Top navbar
+website:
+  favicon: ./pics/RNA-seq_icon_v2.png
+  title: "2026 MBMM UNIMI"
+  navbar:
+    logo: ./pics/RNA-seq_icon_v2.png
+    left:
+      - href: ./pages/index.Rmd
+        text: Home
+      - href: ./IntroGR/pages/Intro_to_R.Rmd
+        text: Intro_to_R
+      - href: ./IntroGR/pages/GRanges_gtf.Rmd
+        text: Working with genomic coordinates
+      - href: ./ChIP-seq_analysis/pages/ChIP-seq_principles.Rmd
+        text: ChIP-seq principles
+      - href: ./ChIP-seq_analysis/pages/ChIP-seq_analysis_part1.Rmd
+        text: ChIP-seq analysis Part1
+      - href: ./ChIP-seq_analysis/pages/ChIP-seq_analysis_part2.Rmd
+        text: ChIP-seq analysis Part2
+      - href: ./Gviz/pages/Genomic_overviews_with_Gviz.Rmd
+        text: Genomic visualization
+      - href: ./PBMC3k/pages/scRNA-seq_PBMC3k.Rmd
+        text: scRNA-seq_PBMC3k
+#      - href: ./pages/help.Rmd
+#        text: Help  
+    right: 
+      - icon: github
+        href: https://github.com/paganilab
+      - icon: twitter
+        href: https://twitter.com/LabPagani
+
+
+# Themes, can be changed with .css files and .scss 
+format:
+  html:
+    theme: 
+      - yeti
+      - sass_styling.scss
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+
+# Code theme
+highlight-style: github

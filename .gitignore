@@ -1,0 +1,23 @@
+# ignore additional files
+*.Rproj
+*.Rhistory
+.RData
+.DS_Store
+.Rproj.user/
+*.rds
+*.zip
+*.gz
+/.quarto/
+course_material/*
+results/*
+filtered_gene_bc_matrices/*
+ChIP-seq_analysis/Mar24/*
+ChIP-seq_analysis/MBMM25_uploadata/*
+ChIP-seq_analysis/MOBW2024_uploadata/*
+ChIP-seq_analysis/results/*
+IntroGR/GSE174810/*
+IntroGR/results/*
+PBMC3k/inputDirectory/filtered_gene_bc_matrices/*
+PBMC3k/pages/filtered_gene_bc_matrices/*
+
+**/*.quarto_ipynb

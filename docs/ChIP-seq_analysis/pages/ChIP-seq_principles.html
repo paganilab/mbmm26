@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-05-24">
+
+<title>ChIP-seq_workflow – 2026 MBMM UNIMI</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../.././pics/RNA-seq_icon_v2.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-f8036787ac8f1755500ff5c8279f95ac.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../.././pics/RNA-seq_icon_v2.png" alt="" class="navbar-logo light-content">
+    <img src="../.././pics/RNA-seq_icon_v2.png" alt="" class="navbar-logo dark-content">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">2026 MBMM UNIMI</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../pages/index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../IntroGR/pages/Intro_to_R.html"> 
+<span class="menu-text">Intro_to_R</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../IntroGR/pages/GRanges_gtf.html"> 
+<span class="menu-text">Working with genomic coordinates</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../../ChIP-seq_analysis/pages/ChIP-seq_principles.html" aria-current="page"> 
+<span class="menu-text">ChIP-seq principles</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../ChIP-seq_analysis/pages/ChIP-seq_analysis_part1.html"> 
+<span class="menu-text">ChIP-seq analysis Part1</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../ChIP-seq_analysis/pages/ChIP-seq_analysis_part2.html"> 
+<span class="menu-text">ChIP-seq analysis Part2</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../Gviz/pages/Genomic_overviews_with_Gviz.html"> 
+<span class="menu-text">Genomic visualization</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../PBMC3k/pages/scRNA-seq_PBMC3k.html"> 
+<span class="menu-text">scRNA-seq_PBMC3k</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/paganilab"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/LabPagani"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#omics-experiments" id="toc-omics-experiments" class="nav-link active" data-scroll-target="#omics-experiments">Omics experiments</a></li>
+  <li><a href="#the-chip-seq-technology" id="toc-the-chip-seq-technology" class="nav-link" data-scroll-target="#the-chip-seq-technology">The ChIP-seq technology</a></li>
+  <li><a href="#tips-for-designing-a-chip-seq-experiment" id="toc-tips-for-designing-a-chip-seq-experiment" class="nav-link" data-scroll-target="#tips-for-designing-a-chip-seq-experiment">Tips for designing a ChIP-seq experiment</a></li>
+  <li><a href="#next-generation-sequencing" id="toc-next-generation-sequencing" class="nav-link" data-scroll-target="#next-generation-sequencing">Next Generation Sequencing</a></li>
+  <li><a href="#the-basics-of-chip-seq-data-processing" id="toc-the-basics-of-chip-seq-data-processing" class="nav-link" data-scroll-target="#the-basics-of-chip-seq-data-processing">The basics of ChIP-seq data processing</a>
+  <ul class="collapse">
+  <li><a href="#raw-sequencing-output" id="toc-raw-sequencing-output" class="nav-link" data-scroll-target="#raw-sequencing-output">Raw Sequencing Output</a></li>
+  <li><a href="#quality-metrics-inspection" id="toc-quality-metrics-inspection" class="nav-link" data-scroll-target="#quality-metrics-inspection">Quality metrics inspection</a></li>
+  <li><a href="#trimming" id="toc-trimming" class="nav-link" data-scroll-target="#trimming">Trimming</a></li>
+  <li><a href="#read-alignment" id="toc-read-alignment" class="nav-link" data-scroll-target="#read-alignment">Read alignment</a></li>
+  <li><a href="#peak-calling" id="toc-peak-calling" class="nav-link" data-scroll-target="#peak-calling">Peak calling</a></li>
+  <li><a href="#collapse-data-into-a-single-dataset" id="toc-collapse-data-into-a-single-dataset" class="nav-link" data-scroll-target="#collapse-data-into-a-single-dataset">Collapse data into a single dataset</a></li>
+  <li><a href="#counting-reads-in-consensus-peaks" id="toc-counting-reads-in-consensus-peaks" class="nav-link" data-scroll-target="#counting-reads-in-consensus-peaks">Counting reads in consensus peaks</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">ChIP-seq_workflow</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 24, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="omics-experiments" class="level2">
+<h2 class="anchored" data-anchor-id="omics-experiments">Omics experiments</h2>
+<p>‘Omics’ refers to the discipline that answers questions regarding specific aspects of molecular biology (the ‘omes’). These questions are enabled by omics experiments - e.g.&nbsp;transcriptomics, epigenomics, proteomics; in most cases, these will be sequencing- or mass-spectrometry based.</p>
+</section>
+<section id="the-chip-seq-technology" class="level2">
+<h2 class="anchored" data-anchor-id="the-chip-seq-technology">The ChIP-seq technology</h2>
+<p>In this context, we chose to deal with a Chromatin Immuno-precipitation (ChIP from now on) assay.</p>
+<blockquote class="blockquote">
+<p>💭 Suppose you have found an interesting, new histone variant or transcription factor, and managed to produce a strong antibody against it. You want to know where it’s located in the genome of your cells of interest (say, tumor cells), to start deducing its function.</p>
+</blockquote>
+<p>ChIP, coupled to sequencing (ChIP-seq), allows you to approach the question, <strong>genome-wide</strong>.</p>
+<p>A standard ChiP-seq workflow begins by extracting chromatin (DNA bound to protein), fragmenting it, and selecting the protein or protein variant of interest from this complex mixture with an antibody that is specific for it. The <strong>subset of genome you isolate</strong> constitutes the sequences you expect your variant to bind, <strong>providing inferences regarding its function</strong>.</p>
+<p>The isolation of chromatin fragments is followed by library preparation and high-throughput sequencing to generate hundreds of millions of short single- or paired-end reads. These reads are then aligned to a reference genome, after which downstream analyses are performed, including peak calling, signal quantification, differential analysis, gene annotation, and enrichment analyses.</p>
+<blockquote class="blockquote">
+<p>ChIP-seq use in mapping chromatin-binding proteins has been seminal in epigenetics research! (<a href="https://pubmed.ncbi.nlm.nih.gov/21825079/">Ku et al., 2011</a>)</p>
+</blockquote>
+<p>Here you can see a recap of the major steps:</p>
+<pre><code>+ Cross-linking: add Formaldehyde
++ Cell lysis (breakdown of cell membranes)
++ Fragmentation of DNA fragments (shearing), e.g. digestion with specific endonuclease enzymes (dpn1) or sonication
++ Addition of specific bead-coupled antibody against the protein of interest, separating it from the mixture
++ Separate DNA from the protein (reverse cross-linking), and DNA purification
++ DNA fragment amplification, library construction
++ Library sequencing by NGS (essentially Illumina)</code></pre>
+<center>
+<div>
+<p><img src="https://www.creativebiomart.net/epigenetics/wp-content/themes/epigenetics/upload/images/1-6-1-1-2-Transcription-Factor-ChIP-Seq-1.jpg" width="500"></p>
+</div>
+</center>
+</section>
+<section id="tips-for-designing-a-chip-seq-experiment" class="level2">
+<h2 class="anchored" data-anchor-id="tips-for-designing-a-chip-seq-experiment">Tips for designing a ChIP-seq experiment</h2>
+<p>Besides characterizing binding patterns in general, a common goal in ChIP-seq experiments is to <strong>identify changes in protein binding patterns</strong> between conditions, an application known as differential binding.</p>
+<p>Effective analysis of ChIP-seq data requires sufficient coverage by sequence reads (<strong>sequencing depth</strong>). It mainly depends on the size of the genome, and the number and size of the binding sites of the protein.</p>
+<ul>
+<li><p>For mammalian (or any species with a relatively large genome) transcription factors (TFs) and chromatin modifications such as enhancer-associated histone marks: <strong>20 million reads</strong> are adequate</p></li>
+<li><p>Proteins with more binding sites (e.g., RNA Pol II) or more promiscuous factors (e.g.&nbsp;CTCF) need more reads, up to <strong>60 million</strong> for mammalian ChIP-seq</p></li>
+<li><p>Sequencing depth rules of thumb: &gt;10M reads for <em>narrow</em> peaks, &gt;20M for <em>broad</em> peaks (you will understand better this concept later in the <em>Peak Calling section</em>)</p></li>
+</ul>
+<p>Another consideration is about sequence modality: long &amp; paired-end reads are useful, but not essential - they may however help in specific, high-precision binding site discovery. Most of the times, ChIP-seq can be performed in <strong>single-end</strong> mode.</p>
+<p>About the number of <strong>technical replicates</strong>, unlike with RNA-Seq, more than two replicates do not significantly increase the number of identified peaks.</p>
+<section id="chip-controls" class="level4">
+<h4 class="anchored" data-anchor-id="chip-controls">ChIP controls</h4>
+<p>A successful ChIP-seq experiment must have the appropriate <strong>controls</strong> to optimize signal-noise ratio. Well-made controls help <strong>eliminate false positives</strong>. In fact, there is always some signal on open chromatin. This may be due to multiple factors, but can be boiled down to three reasons: <strong>A)</strong> non-specific binding from the antibody can precipitate random sequences <strong>B)</strong> digestion, sonication, or any other method of shearing will introduce biases towards certain sequences <strong>C)</strong> different operators will perform the same protocol slightly differently, yielding higher or lower signal/noise ratios.</p>
+<p>The following controls are often used to abate these biases:</p>
+<ul>
+<li><p>An “<strong>input</strong>” DNA sample in which a library is generated from DNA that has been cross-linked and sonicated but not immuno-precipitated. It controls for the <strong>bias introduced before even immunoprecipitating</strong>, i.e.&nbsp;from sonication.</p></li>
+<li><p>An <strong>IgG</strong> “mock”-ChIP, using an antibody that will not bind to nuclear proteins and should generate random immuno-precipitated DNA. It controls for <strong>non-specific sequences</strong> that precipitate alongside the target protein, but are not bound by it.</p></li>
+<li><p>A <strong>Spike-In</strong> can also be introduced, using different genomes (e.g.&nbsp;Drosophila in a Human experiment) to control for handling <strong>variability</strong> between users, or batch differences between reagents. This helps dampen these confounders.</p></li>
+</ul>
+<blockquote class="blockquote">
+<p><strong>Input DNA control is ideal</strong> in most of the cases. Indeed, one problem with IgG control is that if too little DNA is recovered after immuno-precipitation, sequencing library will be of low complexity and binding sites identified using this control could be biased. Read <a href="https://www.biostars.org/p/15817/">this biostars post</a> for discussion.</p>
+</blockquote>
+</section>
+</section>
+<section id="next-generation-sequencing" class="level2">
+<h2 class="anchored" data-anchor-id="next-generation-sequencing">Next Generation Sequencing</h2>
+<p>NGS technologies (Illumina/PacBio/Ultima/BGI) allow the processing of millions of synthesis reactions <strong>in parallel</strong>, resulting in high throughput, higher sensitivity, speed and reduced cost compared to first generation sequencing technologies (e.g., Sanger method).</p>
+<blockquote class="blockquote">
+<p>Given the vast amounts of quantitative sequencing data generated, NGS-based methods rely on resource-intensive <strong>data processing pipelines</strong> to analyze data.</p>
+</blockquote>
+<p>In addition to the sequence itself, and unlike Sanger sequencing, the high-throughput nature of NGS provides <strong>quantitative</strong> information (depth of coverage) due to the high level of sequence redundancy at a locus.</p>
+<p>There are short-read and long-read NSG approaches. Short reads of NGS range in size <strong>from 75 to 300 bp</strong> depending on the application and sequencing chemistry. NGS is taken to mean second generation technologies, however 3G and 4G technologies have since evolved (enable longer read sequences in excess of <strong>10 kilobases</strong>).</p>
+<p>Among 2G NGS chemistries, Illumina <strong>sequencing by synthesis</strong> (SBS) is the most widely adopted worldwide, responsible for generating more than 90% of the world’s sequencing data.</p>
+<center>
+<div>
+<p><img src="https://efsa.onlinelibrary.wiley.com/cms/asset/3d005e92-0c1d-498a-b8d1-8796597dc74c/efs2e16086-fig-0004-m.jpg" width="500"></p>
+</div>
+</center></section>
+<section id="the-basics-of-chip-seq-data-processing" class="level2">
+<h2 class="anchored" data-anchor-id="the-basics-of-chip-seq-data-processing">The basics of ChIP-seq data processing</h2>
+<section id="raw-sequencing-output" class="level3">
+<h3 class="anchored" data-anchor-id="raw-sequencing-output">Raw Sequencing Output</h3>
+<p>The <strong>raw output</strong> of any sequencing run consists of a series of sequences (called <em>tags</em> or <strong><em>reads</em></strong>). These sequences can have varying length based on the run parameters set on the sequencing platform. Nevertheless, <strong>they are made available for humans to read under a standardized file format known as FASTQ</strong>. This is the universally accepted format used to encode sequences after sequencing. An example of real FASTQ file with only two <strong><em>reads</em></strong> is provided below.</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="sc">@</span>Seq1</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>AGTCAGTTAAGCTGGTCCGTAGCTCTGAGGCTGACGAGTCGAGCTCGTACG</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>BBBEGGGGEGGGFGFGGEFGFGFGGFGGGGGGFGFGFGGGFGFGFGFGFG</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="sc">@</span>Seq2</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>TGCTAAGCTAGCTAGCTAGCTAGCTAGCTAGCTAGCTAGCTAGCTAGC</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>FASTQ files are an intermediate file in the analysis</strong> and are used to assess quality metrics for any given sequence. The <strong>quality of each base call</strong> is encoded in the line after the <code>+</code> following the standard <a href="https://en.wikipedia.org/wiki/Phred_quality_score"><strong>Phred score</strong></a> system.</p>
+<blockquote class="blockquote">
+<p>💡 <strong>Since we now have an initial metric for each sequence, it is mandatory to conduct some standard quality control evaluation of our sequences to eventually spot technical defects in the sequencing run early on in the analysis.</strong></p>
+</blockquote>
+</section>
+<section id="quality-metrics-inspection" class="level3">
+<h3 class="anchored" data-anchor-id="quality-metrics-inspection">Quality metrics inspection</h3>
+<p>Computational tools like <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a> aid with the <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/"><strong>visual inspection of per-sample quality metrics</strong></a> from NGS experiments. Some of the QC metrics of interest to consider include the ones listed below, on the <strong>left</strong> are optimal metric profiles while on the <strong>right</strong> are sub-optimal ones:</p>
+<p><strong>Per-base Sequence Quality</strong>: This uses <strong>box plots</strong> to highlight the per-base quality along all <strong>reads in the sequencing experiment, we can notice a physiological drop in quality towards the end part of the read</strong>.</p>
+<p><strong>Per-sequence Quality Scores</strong>: Here we are plotting the <strong>distribution of Phred scores</strong> across all identified sequences, we can see that the high quality experiment (left) has a peak at higher Phred scores values (34-38).</p>
+<p><strong>Per-base Sequence Content</strong>: Here we check the sequence (read) base content, in a normal scenario we do not expect any dramatic variation across the full length of the read since we should see a quasi-balanced distribution of bases.</p>
+<p><strong>Per-sequence GC Content</strong>: GC-content refers to the <strong>degree at which guanosine and cytosine are present within a sequence</strong>, in NGS experiments which also include PCR amplification this aspect is crucial to check since GC-poor sequences may be enriched due to their easier <strong>amplification bias</strong>. In a normal random library we would expect this to have a bell-shaped distribution such as the one on the left.</p>
+<p><strong>Sequence Duplication Levels</strong>: This plot shows the degree of sequence duplication levels. In a normal library (left) we <strong>expect to have low levels of duplication</strong> which can be a positive indicator of high sequencing coverage.</p>
+<p><strong>Adapter Content</strong>: In NGS experiments we use <strong>adapters</strong> to create a library. Sometimes these can get sequenced accidentally and end up being part of a <strong>read</strong>. This phenomenon can be spotted here and corrected using a computational approach called <strong>adapter trimming</strong>.</p>
+</section>
+<section id="trimming" class="level3">
+<h3 class="anchored" data-anchor-id="trimming">Trimming</h3>
+<p>The <strong>read trimming</strong> step consists of removing a variable portion of read extremities that contain adapters/have suboptimal quality indicated by the Phred score. Tools like <code>Cutadapt</code> can be used to perform this task after read QC, and FASTQC can be eventually run just after read trimming to double-check positive effect of getting rid of bad sequences. Note that after this step, reads might have different lengths.</p>
+</section>
+<section id="read-alignment" class="level3">
+<h3 class="anchored" data-anchor-id="read-alignment">Read alignment</h3>
+<p>Now that we have assessed the quality of the sequencing data, we are ready to align the reads to the <strong>reference genome</strong> in order to <strong>map the exact chromosomal</strong> location they derive from.</p>
+<blockquote class="blockquote">
+<p>A reference genome is a set of nucleic acid sequences assembled as a representative example of a species’ genetic material. It does not accurately represent the set of genes of any single organism, but a <em>mosaic</em> of different nucleic acid sequences from each individual. For each model organism, <strong>several possible reference genomes may be available</strong> (e.g.&nbsp;hg19 and hg38 for human).</p>
+<p>As the cost of DNA sequencing falls, and new full genome sequencing technologies emerge, more genome sequences continue to be generated. New alignments are built and the reference genomes improved (fewer gaps, fixed misrepresentations in the sequence, etc). The different reference genomes correspond to the different released versions (called “<strong>builds</strong>”).</p>
+</blockquote>
+<p>A mapper tool takes as input a reference genome and a set of reads. Its aim is to <strong>match each read sequence with the reference genome sequence</strong>, allowing mismatches, indels and clipping of some short fragments on the two ends of the reads.</p>
+<center>
+<p><strong>Illustration of the mapping process</strong></p>
+<img src="https://training.galaxyproject.org/training-material/topics/sequence-analysis/images/mapping/mapping.png" width="500">
+</center>
+<p>Among the different mappers, <code>Bowtie2</code> is a fast and open-source aligner particularly good at aligning sequencing reads of about 50 up to 1,000s of bases to relatively long genomes.</p>
+<p>Bowtie2 can identify reads that are:</p>
+<ol type="1">
+<li><p><strong>uniquely mapped</strong>: read pairs aligned exactly 1 time</p></li>
+<li><p><strong>multi-mapped</strong>: reads pairs aligned more than 1 time</p></li>
+<li><p><strong>unmapped</strong>: read pairs non concordantly aligned or not aligned at all</p></li>
+</ol>
+<blockquote class="blockquote">
+<p>Multi-mapped reads can happen because of repetition in the reference genome (e.g.&nbsp;multiple copies of a gene), particularly when reads are small. It is difficult to decide where these sequences come from and therefore <strong>most of the pipelines ignore them</strong>.</p>
+</blockquote>
+<section id="mapping-statistics" class="level4">
+<h4 class="anchored" data-anchor-id="mapping-statistics">Mapping statistics</h4>
+<p>Checking the mapping statistics is an important step to perform before to continue any analyses. There are several potential <strong>sources for errors in mapping</strong>, including (but not limited to):</p>
+<ul>
+<li><p>PCR artifacts: PCR errors will show as mismatches in the alignment</p></li>
+<li><p>sequencing errors</p></li>
+<li><p>error of the mapping algorithm due to repetitive regions or other low-complexity regions.</p></li>
+</ul>
+<p>A <strong>low percentage of uniquely mapped reads</strong> is often due to (i) either excessive amplification in the PCR step, (ii) inadequate read length, or (iii) problems with the sequencing platform.</p>
+<blockquote class="blockquote">
+<p><strong>70% or higher</strong> is considered a good percentage of uniquely mapped reads over all the reads, whereas 50% or lower is concerning. The percentages are not consistent across different organisms, thus the rule can be flexible!</p>
+</blockquote>
+<p>But where the read mappings are stored?</p>
+</section>
+<section id="the-bam-file-format" class="level4">
+<h4 class="anchored" data-anchor-id="the-bam-file-format">The BAM file format</h4>
+<p>A BAM (Binary Alignment Map) file is a <em>compressed binary file</em> storing the read sequences, whether they have been aligned to a reference sequence (e.g., a chromosome), and if so, the position on the reference sequence at which they have been aligned.</p>
+<p>A BAM file (or a SAM file, the non-compressed version) consists of:</p>
+<ul>
+<li><p>A <strong>header section</strong> (the lines starting with @) containing <em>metadata</em>, particularly the chromosome names and lengths (lines starting with the <span class="citation" data-cites="SQ">@SQ</span> symbol)</p></li>
+<li><p>An <strong>alignment section</strong> consisting of a table with 11 mandatory fields, as well as a variable number of optional fields.</p></li>
+</ul>
+<center>
+<strong>BAM file format</strong> <img src="https://i2.wp.com/bioinformaticamente.com/wp-content/uploads/2021/03/sam_format_annotated_example.5108a0cd-1.jpg?resize=616%2C328&amp;ssl=1" width="500">
+</center>
+<p>Questions:</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Which information do you find in a BAM file that you also find in the FASTQ file?</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sequences and quality information</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>What is the additional information compared to the FASTQ file?</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mapping information, Location of the read on the chromosome, Mapping quality, etc</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+</section>
+<section id="peak-calling" class="level3">
+<h3 class="anchored" data-anchor-id="peak-calling">Peak calling</h3>
+<p>The read count data generated by ChIP-seq is massive. In order to predict <em>the actual sites where the protein of interest is likely to bind</em>, different peak calling methods have been developed. <strong>Peaks</strong> are regions with <strong>significant number of mapped reads that produce a <em>pileup</em></strong>.</p>
+<blockquote class="blockquote">
+<p>ChIP-seq is most often performed with <strong>single-end reads</strong>, and ChIP fragments are sequenced from their 5’ ends only. This creates <strong>two distinct peaks of read density</strong>! One on each strand with the binding site falling in the middle of these peaks. The distance from the middle of the peaks to the binding site is often referred to as the “<em>shift</em>”.</p>
+</blockquote>
+<center>
+<p><img src="https://cdn.ncbi.nlm.nih.gov/pmc/blobs/a0de/2917543/bac90d7301c9/nihms223699f1.jpg" width="400"></p>
+<p><em>Forward (blue) and reverse (maroon) Read Density Profiles derived from the read data contribute to the Combined Density Profile (orange). <a href="https://pubmed.ncbi.nlm.nih.gov/19160518/">Nat. Methods,2008</a></em></p>
+</center>
+<p>The most popular tool to find peaks is <strong>MACS2</strong> which empirically models the <strong>shift size</strong> of ChIP-Seq reads, and uses it to improve the spatial resolution of predicted binding sites. Briefly, these are <strong>the steps</strong> performed by MACS:</p>
+<ol type="1">
+<li><p>removing duplicate reads</p></li>
+<li><p>modelling the shift size</p></li>
+<li><p>scaling the libraries with respect to their controls</p></li>
+<li><p>performing peak detection</p></li>
+<li><p>estimating False Discovery Rate (FDR)</p></li>
+</ol>
+<p>The peak detection identifies areas in the genome that have been <strong>enriched</strong> <strong>with mapped reads</strong>.</p>
+<blockquote class="blockquote">
+<p>Enrichment = Immunoprecipitation reads/background reads (mock IP or untagged IP).</p>
+<p>If an experimental control data is NOT available, a <em>random genomic background</em> is assumed.</p>
+</blockquote>
+<center>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../pics/chip_peakcalling.png" class="img-fluid figure-img" width="421"></p>
+<figcaption><strong>Overview of the Peak Calling step</strong></figcaption>
+</figure>
+</div>
+</center>
+<p>Finally, peaks are filtered to reduce <em>false positives</em> and ranked according to relative strength or statistical significance.</p>
+<section id="different-peak-profiles" class="level4">
+<h4 class="anchored" data-anchor-id="different-peak-profiles">Different peak profiles</h4>
+<p>An important factor that influences the sequencing depth that is required for a ChIP–seq experiment is whether the protein (or chromatin modification) is a point-source factor, a broad-source factor or a mixed-source factor.</p>
+<ul>
+<li><p><strong>Point sources</strong> occur at specific locations in the genome. This class includes sequence-specific transcription factors as well as some highly localized chromatin marks, for example, those associated with enhancers and transcription start sites. They will generate more often <strong><em>narrow</em></strong> <strong>peaks</strong>.</p></li>
+<li><p><strong>Broad sources</strong> are generally those that cover extended areas of the genome, such as many chromatin marks (for example, histone H3 lysine 9 trimethylation (H3K9me3) marks). They will give raise to <strong>broad peaks</strong>.</p></li>
+<li><p><strong>Mixed-source factors</strong>, such as RNA polymerase II, yield both types of peaks. As expected, broad-source and mixed-source factors require a greater number of reads than point-source factors. Peaks generated will have a <strong>mixed profile between narrow and broad</strong>.</p></li>
+</ul>
+<center>
+<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fnrg3642/MediaObjects/41576_2014_Article_BFnrg3642_Fig2_HTML.jpg" width="500">
+</center>
+</section>
+<section id="additional-qc-metrics" class="level4">
+<h4 class="anchored" data-anchor-id="additional-qc-metrics">Additional QC metrics</h4>
+<p>After peak calling, it’s important to check some metrics that are indicative of the overall quality of the ChIP-seq experiment. Here are two of the most useful:</p>
+<ul>
+<li><p><em>FRiP score</em>: reports the percentage of reads overlapping within called peak. Can be useful to understand how much the IP sample is “enriched”.</p></li>
+<li><p><em>Strand cross-correlation</em>: high-quality ChIP-seq produces significant clustering of enriched reads at locations bound by the protein of interest, that present as a bimodal density profile on the forward and reverse strands (peaks). The cross-correlation metric calculates how many bases to shift the bimodal peaks in order to get the maximum correlation between the two read clusters, which corresponds to the <em>predominant <strong>fragment length</strong></em>.</p></li>
+</ul>
+</section>
+<section id="bigwig-and-bed-file-formats" class="level4">
+<h4 class="anchored" data-anchor-id="bigwig-and-bed-file-formats">BigWig and BED file formats</h4>
+<p>Most high-throughput data can be viewed as a <strong><em>continuous</em></strong> <strong>score</strong> over the bases of the genome. In case of RNA-seq or ChIP-seq experiments, the data can be represented as <strong>read coverage values per genomic base position</strong>.</p>
+<p>This sort of data can be stored as a generic text file or can have special formats such as Wig (stands for wiggle) from UCSC, or the <strong>bigWig format</strong>, which is an indexed binary format of the wig files.</p>
+<blockquote class="blockquote">
+<p>The bigWig format is great for data that covers a large fraction of the genome with varying and continuous scores, because the file is much smaller than regular text files that have the same information and it can be queried more easily since <strong>it is indexed</strong>. Most of the ENCODE project data can be downloaded in bigWig format!</p>
+</blockquote>
+<p>If we want to know instead the peak locations in the genome as <strong>chromosome coordinates with well defined <em>start</em> and <em>end</em> positions</strong>, we want to look at BED files, that are the main output of the peak calling step.</p>
+<p>A typical BED file is a text file format used to store genomic regions as coordinates. The data are presented in the form of columns separated by <em>tabs</em>. The first three required BED fields are: “chrom”, “chromStart”, and “chromEnd”. There are 9 additional optional BED fields. You cna find more details in the UCSC webpage <a href="https://genome.ucsc.edu/FAQ/FAQformat.html#format1">here</a>.</p>
+<blockquote class="blockquote">
+<p>We will use this file type to inspect peak locations and for future downstream analyses!</p>
+</blockquote>
+</section>
+</section>
+<section id="collapse-data-into-a-single-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="collapse-data-into-a-single-dataset">Collapse data into a single dataset</h3>
+<p>Imagine that you are performing these steps of read processing not just for one library, but for a collection of samples <em>with different replicates and experimental conditions</em>, and you subsequently want to make differential comparisons across conditions. To this aim, it’s necessary to collapse the single peak files obtained from each single library into a single <strong><em>consensus</em></strong> <strong>peakset</strong>.</p>
+<p>In this step you can also add a filtering to exclude genomic intervals that are identified as peaks only in a minority of samples. <code>DiffBind</code> and <code>BEDTools</code> are two common programs that can handle this task.</p>
+<center>
+<p><img src="../pics/Consensus_peaks.png" class="img-fluid" width="400"></p>
+<p><a href="https://databio.org/slides/downstream_atac_analysis.html#/acknowledgements">Source</a></p>
+</center>
+<p>It can be helpful to make a plot of how many peaks overlap in how many samples, like this one:</p>
+<center>
+<p><img src="https://bioinformatics-core-shared-training.github.io/Quantitative-ChIPseq-Workshop/articles/Quantitative-ChIPseq-Workshop_files/figure-html/rateplot-1.png" width="400"></p>
+<p><em>This plot shows that there are almost 4000 total merged peaks, representing the union of all intervals. At the other extreme, there are around 100 peaks that overlap in all 11 samples, representing the intersection of all the samples.</em></p>
+</center>
+<blockquote class="blockquote">
+<p>Which should we chose? Given the rigor of the statistical analysis that we are going to perform, now we can choose a more <em>inclusive</em> consensus set. The default is to make a consensus peakset using peaks identified <strong>in at least 2 samples</strong>.</p>
+</blockquote>
+</section>
+<section id="counting-reads-in-consensus-peaks" class="level3">
+<h3 class="anchored" data-anchor-id="counting-reads-in-consensus-peaks">Counting reads in consensus peaks</h3>
+<p>Once consensus genomic regions are defined, the next step is to <strong>count the number of sequencing reads that align to these regions</strong>. This read counting process provides <strong>quantitative information</strong> about the strength and extent of protein binding within the identified peaks.</p>
+<blockquote class="blockquote">
+<p>Uniquely mapped reads can be counted within peaks in the consensus using a tool called <code>FeatureCounts</code>.</p>
+</blockquote>
+<p>Sample counts for all the consensus peaks are output as a tabular file, in which <strong>each row represents one peak</strong>, and you have <strong>one column for each sample</strong>. We will now load one and take a closer look: this will be our starting point in the <em>hands-on</em> analysis of a ChIP-seq dataset.</p>
+<blockquote class="blockquote">
+<p>The following scheme summarizes the steps of a ChIP-seq analysis workflow that we discussed so far. It also shows the file format names associated to the output of each task.</p>
+</blockquote>
+<center>
+<img src="../pics/Workflow_chipseq.png" class="img-fluid" width="647">
+</center>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

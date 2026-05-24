@@ -1,0 +1,47 @@
+/*-- scss:defaults --*/
+// Fonts
+//@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap');
+
+// Colors
+$lightgray: #343a40;
+$gray: #495057;
+$darkergray: #343a40;
+
+// Code blocks
+$code-block-bg: #f8f9fa;
+$code-block-bg-alpha: -.6;
+$code-block-border-left-size: 2px;
+$code-color: #38618C;
+
+// Link color
+$link-color: #B86353;
+
+// Navbar
+$navbar-bg: #dbc6bd;
+//#deb2a0;
+
+/*-- scss:rules --*/
+body {
+    font-weight: 80;
+    font-size: 10;
+    color: $darkergray;
+}
+
+h3 {
+    font-weight: 150;
+    font-size: 18;
+    color: $black;
+  }
+
+h2 {
+    font-size: 24;
+    font-weight: 200;
+    color: $darkergray;
+  }
+
+blockquote {
+    font-size: medium;
+}
+  .p {
+    font-size: small;
+  }
