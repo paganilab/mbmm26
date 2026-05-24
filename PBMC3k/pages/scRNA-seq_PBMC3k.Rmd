@@ -150,7 +150,7 @@ We run the main processing steps for single cell analysis:
  * Compute UMAP to embed the neighborhood graph
 
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 
 pbmc <- NormalizeData(pbmc)
 pbmc <- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000)
@@ -162,7 +162,7 @@ pbmc <- RunPCA(pbmc, features = VariableFeatures(object = pbmc))
 
 ```
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 pbmc <- FindNeighbors(pbmc, dims = 1:10)
 pbmc <- FindClusters(pbmc, resolution = 0.5)
 pbmc <- RunUMAP(pbmc, dims = 1:10)
