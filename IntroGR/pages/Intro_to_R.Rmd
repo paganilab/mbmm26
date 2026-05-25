@@ -39,19 +39,13 @@ div.col pre.r { background-color:white; }
 -   Working with R objects
 -   Install, and use R packages and functions
 
-
-
 ## Why learn R?
 
 R is a programming language built for statistical computing, data exploration, and graphical representation.
-Developed by Ross Ihaka and Robert Gentleman in the early 1990s, it has grown to be widely adopted in academia, research, and various data-focused industries. 
+Developed by Ross Ihaka and Robert Gentleman in the early 1990s, it has grown to be widely adopted in academia, research, and various data-focused industries.
 Coding is how humans can instruct computers to perform certain tasks, often highly complex.
 
-<center>
-
-![](../pics/Why_learn_R.webp){width="400"}
-[Source](<https://aarababdellah.medium.com/what-is-r-programming-language-used-for-f600895e0416>)
-</center>
+<center>![](../pics/Why_learn_R.webp){width="400"} [Source](https://aarababdellah.medium.com/what-is-r-programming-language-used-for-f600895e0416)</center>
 
 Key features and advantages of R:
 
@@ -71,8 +65,8 @@ RStudio is an *integrated development environment* (IDE) and will be our primary
 
 You can follow two strategies:
 
-1.  Install `R` and RStudio on your machine 
-2.  **Use the R Studio already installed on the mochines in the room.**
+1.  Install `R` and RStudio on your machine
+2.  **Use the R Studio already installed on the machines in the room.**
 3.  Run RStudio in a browser using RStudio Cloud.
 
 Note that the first option will require a bit more time and effort.
@@ -109,12 +103,12 @@ The RStudio working interface is composed of *quadrants*:
 
     -   The *History* pane keeps whatever computation you run in the console.
         You can re-run the computation stored in the history (double click or copy-paste) and you can also copy the past code into an existing or new *R Script*.
-        
-        
+
 ## Communicating with R through the Console
 
-You should see your cursor on the left-hand side of the screen blinking. That window represents the R console. It can be used to “talk” with R through commands that it can understand!
-
+You should see your cursor on the left-hand side of the screen blinking.
+That window represents the R console.
+It can be used to “talk” with R through commands that it can understand!
 
 For example, try typing the following in the console and check what comes out (a.k.a. the output):
 
@@ -122,8 +116,6 @@ For example, try typing the following in the console and check what comes out (a
 # Tell R to print out some words on screen with the "print" command
 print("Hello World!")
 ```
-
-
 
 ## Create an R Markdown notebook
 
@@ -154,10 +146,11 @@ The benefit of creating an R Markdown is that you will be able to save your code
 > This effectively places the hash symbol `#` in front of the line of code.
 > 💡 Notice that also the descriptive text inside the chunks are commented with `#`.
 
-
 ## Install the packages
 
-The analyses we are going to perform require specific *functions* that are not included in the basic set of functions in R. These functions are collected in specific *packages*. R packages are extensions to the R programming language that contain code, data and documentation which help us performing standardized workflows.
+The analyses we are going to perform require specific *functions* that are not included in the basic set of functions in R.
+These functions are collected in specific *packages*.
+R packages are extensions to the R programming language that contain code, data and documentation which help us performing standardized workflows.
 In the chunk below, we instruct R to install the packages that we will need later on through the workshop.
 
 ```{r, eval=FALSE}
@@ -306,6 +299,7 @@ genes
 To create **objects with multiple values**, we can use the function `c()` which stands for 'concatenate':
 
 Let's create a *vector* object, to store some gene names.
+
 ```{r}
 # Adding some more genes to the object
 genes <- c("TP53",
@@ -481,7 +475,6 @@ dataf
 We have instructed R to create a data.frame object.
 We will give more of these commands from now on!
 
-
 ### Functions
 
 We mention the term '*function*' multiple times, but what are functions and why do we need them?
@@ -530,7 +523,7 @@ mean_of_values(values)
 
 <center>![](../pics/Function.png){width="500"}</center>
 
-> Make your own function!
+> 🤔 Exercise: Make your own function!
 > If the formula to convert Fahrenheit to Celsius is as follows, how can you define a function?
 > (32°F − 32) × 5/9 = 0°C
 
@@ -591,7 +584,6 @@ list.files('../results/')
 
 Load (read) and Save (write) files
 
-
 ```{r}
 # Save the dataframe we genertaed above
 write.table(dataf, "../results/dataf.csv", sep = ",", quote = FALSE)
@@ -600,7 +592,6 @@ write.table(dataf, "../results/dataf.csv", sep = ",", quote = FALSE)
 ```{r}
 dataf <- read.table("../results/dataf.csv", sep = ",")
 ```
-
 
 ### Object Attributes
 
@@ -630,8 +621,6 @@ for (obj in all) {
   
 }
 ```
-
-
 
 ## Tidyverse
 
@@ -719,7 +708,6 @@ mtcars %>% select((c("mpg", "cyl")))
 mtcars %>% select(mpg, cyl)
 ```
 
-
 ```{r}
 # Select specific columns
 mtcars %>% select(mpg, cyl) %>% head(2)
@@ -737,7 +725,6 @@ mtcars %>% slice(2:4)
 mtcars %>% filter(mpg>21 & hp>90)
 ```
 
-
 ```{r}
 # Sort a variable based on decreasing values
 mtcars %>% arrange(desc(mpg)) %>% head(2)
@@ -750,13 +737,12 @@ Let’s create a new variable to identify cars with miles per gallon (mpg) \> 25
 mtcars %>% mutate(highmpg = ifelse(mpg>25, '1', '0')) %>% filter(highmpg==1)
 ```
 
+> Note, we do not create a new object here, just inspecting the output of the combined functions we perform.
 
-Combining operations: Identify cars with 5 gears and horse power \> 100.
-Display the miles per gallon in descending order.
+> 🤔 Exercise: Identify cars with 5 gears and horse power \> 100.
+> Display the miles per gallon in descending order.
 
-Note, we do not create a new object here, just inspecting the output of the combined functions we perform.
-
-```{r}
+```{r, eval=TRUE, echo=FALSE}
 # Combining operations
 mtcars %>% 
       mutate(hmpg_gear = ifelse(hp>100 & gear==5, '1', '0')) %>% 
@@ -784,7 +770,6 @@ mtcars %>%
 
 <center>![](../pics/LongFormat.png){width="400"}</center>
 
-
 We use `pivot_longer()`, which "lengthens" data, increasing the number of rows and decreasing the number of columns.
 The inverse transformation is `pivot_wider()`.
 
@@ -804,8 +789,8 @@ mtcars %>%
   slice(1:4) %>% 
   select(1:4) %>% 
   mutate(cars=rownames(.)) %>% 
-  #pivot_longer(!cars, names_to = "keys", values_to = "value")
-  pivot_longer(cols=mpg:hp, names_to = "keys", values_to = "value") %>%
+  pivot_longer(cols=!cars, names_to = "keys", values_to = "value") %>%
+  #pivot_longer(cols=mpg:hp, names_to = "keys", values_to = "value") %>%
   kbl() %>% kable_styling()
   
 ```
@@ -819,6 +804,7 @@ mtcars %>% slice(1:4) %>% select(1:4) %>%
   mutate(cars=rownames(.)) %>% 
   # Here we use gather
   gather(keys, value, -cars) %>%
+  #reshape2::melt(id.vars="cars", measure.vars= c("mpg", "cyl", "disp", "hp"),variable.name="keys",     value.name="value") %>%
   pivot_wider(names_from = "keys", 
               names_prefix = "var_",
               values_from = "value") %>%
@@ -826,9 +812,6 @@ mtcars %>% slice(1:4) %>% select(1:4) %>%
 ```
 
 > Similar transformations can be achieved with the `reshape::melt` and `reshape::dcast` functions
-
-
-
 
 ```{r, eval=FALSE, include=FALSE}
 # 
@@ -838,7 +821,7 @@ mtcars %>% slice(1:4) %>% select(1:4) %>%
 # 
 #   pull(dir) %>% quantile()
 # 
-#   #Rename the last column
+#   #Rename the last column (new = old)
 #   rename('n_ovrlp'=paste0('V', ncol(.)))
 # 
 #   mutate( annotation = gsub(' .*', '', Annotation) )
@@ -846,7 +829,10 @@ mtcars %>% slice(1:4) %>% select(1:4) %>%
 #   rename_with(~ stringr::str_replace(.x, 
 #                                      pattern = "PeakID.*", 
 #                                      replacement = "PeakID"),
-#   )
+#
+#    select(contains("m"))
+#   
+#    )
 # 
 #   
 #   data.with.na %>% mutate(value = replace(value,value>10, 10))
@@ -873,7 +859,16 @@ mtcars %>% slice(1:4) %>% select(1:4) %>%
 
 ### ggplot2
 
-ggplot is a powerful and flexible library for tidyverse.
+ggplot is a powerful and flexible library of tidyverse to create plots.
+
+<center>
+
+![](../pics/plots.png){width="400"}
+
+[*https://r-graph-gallery.com/*](https://r-graph-gallery.com/){.uri}
+
+</center>
+
 Data stored in a dataframe/tibble is passed to ggplot along with two main arguments: i) columns to be plotted, and ii) graphical representation to be displayed.
 Additional customization is possible.
 
@@ -932,7 +927,7 @@ mtcars %>% mutate(across(cyl, as.factor)) %>%
           geom_point()
 ```
 
-Can you modify the code to annotate with car labels?
+Can you modify the code to annotate each point with its car label?
 
 ```{r, fig.width=8, include=TRUE}
 mtcars %>% 
@@ -943,14 +938,15 @@ mtcars %>%
       geom_text(vjust=1.6, hjust=0.4, size=2)
 ```
 
-More exercises:
+> 🤔 More exercises:
+>
+> -   Make all data points size 4 and blue, with red stroke of size 2.
+>
+> -   Size according to the number of gears
 
--   Make all data points size 4 and blue, with red stroke of size 2 and size 4.
--   Size according to the number of gears
-
-```{r, fig.width=6}
+```{r, eval=TRUE, echo=FALSE, fig.width=6}
 mtcars %>% ggplot(aes(mpg, wt )) + 
-  geom_point(size=4, colour='red', fill='blue', shape=21, stroke=2)
+  geom_point(size=4, fill='blue', colour='red', shape=21, stroke=2)
 
 mtcars %>% mutate(across(gear, as.factor)) %>% 
   ggplot(aes(mpg, wt, size=gear)) + geom_point(colour='red')
@@ -961,7 +957,8 @@ mtcars %>% mutate(across(gear, as.factor)) %>%
 
 Plotting distributions - multiple density plots
 
-Plot the miles per gallon density across different cylinder values
+Plot the miles per gallon density across different cylinder values.
+Here, we use additional Aesthetics to change the appearance of the axes and modify the colors of the separate density plots.
 
 ```{r, fig.width=4}
 mtcars %>% mutate(across(cyl, as.factor)) %>% 
@@ -986,7 +983,11 @@ mtcars %>% mutate(across(cyl, as.factor)) %>%
 > <https://cran.r-project.org/web/packages/explore/vignettes/explore-mtcars.html>
 
 > 💡 Create beautiful and informative plots with ggplot.
-> <https://r-graph-gallery.com/> <https://www.cedricscherer.com/2019/08/05/a-ggplot2-tutorial-for-beautiful-plotting-in-r/>
+>
+> <https://r-graph-gallery.com/> 
+>
+> <https://www.cedricscherer.com/2019/08/05/a-ggplot2-tutorial-for-beautiful-plotting-in-r/>
+
 
 ## Create an Rscript
 
