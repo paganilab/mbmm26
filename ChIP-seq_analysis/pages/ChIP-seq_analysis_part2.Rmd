@@ -79,7 +79,7 @@ We introduced the content of these files on the first day, here we'll do a brief
 Import these files as R objects
 
 ```{r, eval=TRUE}
-recurrence_table <- read.table('../MBMM25_uploadata//recurrence_chr12.matrix', sep='\t')
+recurrence_table <- read.table('../MBMM_uploadata//recurrence_chr12.matrix', sep='\t')
 ```
 
 ```{r, include=FALSE}
@@ -91,8 +91,8 @@ recurrence_table <- read.table('../MBMM25_uploadata//recurrence_chr12.matrix', s
 ```
 
 ```{r, eval=TRUE}
-tumor_up_res <- read.table('../MBMM25_uploadata/Korg_UP_regions_results.txt', sep='\t', header=TRUE, quote = "" )
-tumor_down_res <- read.table('../MBMM25_uploadata/Ncr_UP_regions_results.txt', sep='\t', header=TRUE, quote = "")
+tumor_up_res <- read.table('../MBMM_uploadata/Korg_UP_regions_results.txt', sep='\t', header=TRUE, quote = "" )
+tumor_down_res <- read.table('../MBMM_uploadata/Ncr_UP_regions_results.txt', sep='\t', header=TRUE, quote = "")
 ```
 
 ## Understanding recurrence of enhancer regions across patients

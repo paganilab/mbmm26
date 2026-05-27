@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-05-25">
+<meta name="dcterms.date" content="2026-05-27">
 
 <title>ChIP-seq_analysis_part2 – 2026 MBMM UNIMI</title>
 <style>
@@ -230,7 +230,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 25, 2026</p>
+      <p class="date">May 27, 2026</p>
     </div>
   </div>
   
@@ -263,12 +263,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 <p>Import these files as R objects</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>recurrence_table <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"../MBMM25_uploadata//recurrence_chr12.matrix"</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>recurrence_table <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"../MBMM_uploadata//recurrence_chr12.matrix"</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>tumor_up_res <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"../MBMM25_uploadata/Korg_UP_regions_results.txt"</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>tumor_up_res <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"../MBMM_uploadata/Korg_UP_regions_results.txt"</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">quote =</span> <span class="st">""</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>tumor_down_res <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"../MBMM25_uploadata/Ncr_UP_regions_results.txt"</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>tumor_down_res <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"../MBMM_uploadata/Ncr_UP_regions_results.txt"</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">quote =</span> <span class="st">""</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
@@ -859,14 +859,14 @@ $GRADE_COLON_AND_RECTAL_CANCER_DN
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a look at results</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>fgseaRes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre class="bordered"><code>                            pathway      pval      padj        ES       NES
-                             &lt;char&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;
-1: GRADE_COLON_AND_RECTAL_CANCER_UP 0.0321489 0.0642978 0.3032790 1.5754067
-2: GRADE_COLON_AND_RECTAL_CANCER_DN 0.5343228 0.5343228 0.2120043 0.9630339
+<pre class="bordered"><code>                            pathway       pval       padj        ES       NES
+                             &lt;char&gt;      &lt;num&gt;      &lt;num&gt;     &lt;num&gt;     &lt;num&gt;
+1: GRADE_COLON_AND_RECTAL_CANCER_UP 0.02972028 0.05944056 0.3032790 1.5785699
+2: GRADE_COLON_AND_RECTAL_CANCER_DN 0.49103943 0.49103943 0.2120043 0.9796645
    nMoreExtreme  size                                  leadingEdge
           &lt;num&gt; &lt;int&gt;                                       &lt;list&gt;
-1:           18    66 PLAU,TCF7,CD46,GTF3A,HNRNPA2B1,TFB1M,...[17]
-2:          287    41  CHST15,TOX2,SASH1,TGFBR3,TRPS1,GPC1,...[12]</code></pre>
+1:           16    66 PLAU,TCF7,CD46,GTF3A,HNRNPA2B1,TFB1M,...[17]
+2:          273    41  CHST15,TOX2,SASH1,TGFBR3,TRPS1,GPC1,...[12]</code></pre>
 </div>
 </div>
 <p>Plot GSEA results</p>
@@ -1477,13 +1477,13 @@ $complete.dag
 <td style="text-align: left;">hsa05210</td>
 <td style="text-align: left;">Colorectal cancer</td>
 <td style="text-align: left;">9/189</td>
-<td style="text-align: left;">87/9382</td>
+<td style="text-align: left;">87/9392</td>
 <td style="text-align: right;">0.1034483</td>
-<td style="text-align: right;">5.135194</td>
-<td style="text-align: right;">5.555942</td>
-<td style="text-align: right;">0.0000598</td>
-<td style="text-align: right;">0.0102465</td>
-<td style="text-align: right;">0.0083362</td>
+<td style="text-align: right;">5.140668</td>
+<td style="text-align: right;">5.560245</td>
+<td style="text-align: right;">0.0000593</td>
+<td style="text-align: right;">0.0101439</td>
+<td style="text-align: right;">0.0082528</td>
 <td style="text-align: left;">3725/1647/1630/5605/7048/2932/374/5295/6932</td>
 <td style="text-align: right;">9</td>
 </tr>
@@ -1494,13 +1494,13 @@ $complete.dag
 <td style="text-align: left;">hsa04390</td>
 <td style="text-align: left;">Hippo signaling pathway</td>
 <td style="text-align: left;">12/189</td>
-<td style="text-align: left;">157/9382</td>
+<td style="text-align: left;">157/9392</td>
 <td style="text-align: right;">0.0764331</td>
-<td style="text-align: right;">3.794156</td>
-<td style="text-align: right;">5.062257</td>
-<td style="text-align: right;">0.0000751</td>
-<td style="text-align: right;">0.0102465</td>
-<td style="text-align: right;">0.0083362</td>
+<td style="text-align: right;">3.798200</td>
+<td style="text-align: right;">5.066783</td>
+<td style="text-align: right;">0.0000743</td>
+<td style="text-align: right;">0.0101439</td>
+<td style="text-align: right;">0.0082528</td>
 <td style="text-align: left;">652/1496/7048/2932/25937/374/6932/2246/5054/51384/5520/7534</td>
 <td style="text-align: right;">12</td>
 </tr>
@@ -1511,13 +1511,13 @@ $complete.dag
 <td style="text-align: left;">hsa04012</td>
 <td style="text-align: left;">ErbB signaling pathway</td>
 <td style="text-align: left;">8/189</td>
-<td style="text-align: left;">86/9382</td>
+<td style="text-align: left;">86/9392</td>
 <td style="text-align: right;">0.0930233</td>
-<td style="text-align: right;">4.617694</td>
-<td style="text-align: right;">4.832366</td>
-<td style="text-align: right;">0.0003243</td>
-<td style="text-align: right;">0.0238354</td>
-<td style="text-align: right;">0.0193918</td>
+<td style="text-align: right;">4.622616</td>
+<td style="text-align: right;">4.836288</td>
+<td style="text-align: right;">0.0003220</td>
+<td style="text-align: right;">0.0237196</td>
+<td style="text-align: right;">0.0192976</td>
 <td style="text-align: left;">3725/818/5605/8440/2932/374/685/5295</td>
 <td style="text-align: right;">8</td>
 </tr>
@@ -1528,13 +1528,13 @@ $complete.dag
 <td style="text-align: left;">hsa00053</td>
 <td style="text-align: left;">Ascorbate and aldarate metabolism</td>
 <td style="text-align: left;">5/189</td>
-<td style="text-align: left;">31/9382</td>
+<td style="text-align: left;">31/9392</td>
 <td style="text-align: right;">0.1612903</td>
-<td style="text-align: right;">8.006486</td>
-<td style="text-align: right;">5.602462</td>
-<td style="text-align: right;">0.0003492</td>
-<td style="text-align: right;">0.0238354</td>
-<td style="text-align: right;">0.0193918</td>
+<td style="text-align: right;">8.015020</td>
+<td style="text-align: right;">5.606228</td>
+<td style="text-align: right;">0.0003475</td>
+<td style="text-align: right;">0.0237196</td>
+<td style="text-align: right;">0.0192976</td>
 <td style="text-align: left;">54578/7365/7364/2990/219</td>
 <td style="text-align: right;">5</td>
 </tr>

@@ -20,6 +20,7 @@ date: 'Compiled: `r format(Sys.Date(), "%B %d, %Y")`'
 -   Dataset introduction and exploration
 -   Data normalization with `edgeR`
 -   Diagnostic and exploratory analysis
+-   Differential analysis
 -   Resources for ChIP-seq and other omics data
 
 
@@ -168,10 +169,10 @@ list.files("./")
 Import the counts and metadata information for the samples.
 
 ```{r}
-getwd()
-counts <- read.table("../MBMM25_uploadata/raw_counts_chr12.matrix",text = ., sep="\t") %>% as.data.frame()
+#getwd()
+counts <- read.table("../MBMM_uploadata/raw_counts_chr12.matrix",text = ., sep="\t") %>% as.data.frame()
 
-samples <- read.table("../MBMM25_uploadata/colData.txt", text = ., sep="\t") %>% as.data.frame()
+samples <- read.table("../MBMM_uploadata/colData.txt", text = ., sep="\t") %>% as.data.frame()
 
 ```
 
@@ -489,6 +490,11 @@ class(libs1)
 libs1
 ```
 
+```{r, include=FALSE}
+colSums(dds$counts)
+```
+
+
 
 ```{r, include=FALSE}
 libs2 <- dds$samples$lib.size %>% as.integer()
@@ -756,6 +762,8 @@ as.data.frame(cbind(mean,sd, dds$AveLogCPM)) %>% mutate(logMean=log2(mean)) %>% 
 
 ```
 
+
+
 Compute normalized counts for visualization.
 The log2 values are returned when `log=TRUE`.
 
@@ -777,13 +785,6 @@ apply(log2dds, 1, mean) %>% quantile()
 apply(log2dds, 2, sum)
 ```
 
-```{r}
-colSums(dds$counts)
-```
-
-```{r}
-colSums(log2dds)
-```
 
 
 ```{r, eval=FALSE}
@@ -800,6 +801,42 @@ head(log2dds) %>% kbl() %>% kable_styling()
 head(counts) %>% kbl() %>% kable_styling()
 ```
 
+
+```{r, include=FALSE}
+norm.counts <- cpm(dds, normalized.lib.sizes = TRUE, log=FALSE)
+colSums(norm.counts)
+```
+
+
+```{r, include=FALSE}
+# Quantiles of log transformed counts
+norm.counts %>% quantile()
+apply(norm.counts, 1, var) %>% quantile()
+apply(norm.counts, 1, mean) %>% quantile()
+```
+
+
+```{r, include=FALSE, fig.width=4, fig.height=2}
+
+cbind(mean=apply(log2dds, 1, mean),
+      var=apply(log2dds, 1, var) ) %>% as.data.frame() %>% filter(mean<5000) %>% ggplot(aes(mean,var)) + geom_point()
+
+```
+
+```{r, include=FALSE, fig.width=4, fig.height=2}
+
+cbind(mean=apply(norm.counts, 1, mean),
+      var=apply(norm.counts, 1, var) ) %>% as.data.frame() %>% filter(mean<5000) %>% ggplot(aes(mean,var)) + geom_point()
+
+```
+
+
+```{r, include=FALSE, fig.width=4, fig.height=2}
+
+cbind(mean=apply(counts, 1, mean),
+      var=apply(counts, 1, var) ) %>% as.data.frame() %>% filter(mean<500) %>% ggplot(aes(mean,var)) + geom_point()
+
+```
 
 
 ```{r, include=FALSE, eval=FALSE}
@@ -875,7 +912,7 @@ dds$counts %>%
   merge(., samples, by="SampleID") %>%
   
   # Create boxplots  
-  ggplot(aes(x=SampleID, y=counts)) + 
+  ggplot(aes(x=SampleID, y=counts, fill=groups)) + 
   geom_boxplot(outlier.size = 0.05) + 
   #ylim(0,10000) +
   coord_cartesian(ylim = c(0, 500)) + 
@@ -890,6 +927,9 @@ dds$counts %>%
 
 ```{r, eval=FALSE, include=FALSE}
 
+# The goal of stabilizing teh mean-variance relationship is typically to make variability more comparable across abundance levels.
+# normalization aims to remove library-size effects, not necessarily enforce identical numeric sums after every transformation.
+
 #Samples sequenced deeper have more sequencing reads, their count distribution spans higher values.
 #The distribution of counts is unequal between samples.
 
@@ -899,6 +939,8 @@ dds$counts %>%
 # Log2 scale exaggerates the effect.
 # Some normalization methods explicitly align distributions: Quantile normalization BUT NOT CPM, TMM, DESEq2
 
+# ylim --> filters the data
+# coord_cartesian --> zooms in data
 ```
 
 <details>
@@ -1175,7 +1217,10 @@ pcs <- prcomp(log2dds, scale = TRUE)
 ntop=500
 rv <- matrixStats::rowVars(log2dds)
 select <- order(rv, decreasing=TRUE)[seq_len(min(ntop, length(rv)))]
+
 ```
+
+
 
 ```{r}
 
@@ -1184,6 +1229,21 @@ pcs <- prcomp(t(log2dds[select,]), center=TRUE, scale = TRUE)
 percentVar <- round(100 * summary(pcs)$importance[2,])
 pcaData <- as.data.frame(pcs$x) %>% merge(samples, by=0)
 ```
+
+```{r, include=FALSE}
+#The eigenvalues are the squared standard deviations of the principal components.
+#stdev()
+#The proportion of variance is the eigenvalue / sum of eigenvalue   
+#The sum of eigenvalues equals to the total variance in the data which under standardization becomes equal to the number of features. 
+#eig <- pcs$sdev^2
+#sum((summary(pcs)$importance[1,])^2)
+
+# Elbow point
+#diff2 <- diff(diff(eig))
+#elbow <- which.min(diff2) + 1
+
+```
+
 
 
 ```{r}
@@ -1487,7 +1547,7 @@ It is often useful to add on the volcano plot the names of the most interesting 
 
 ```{r}
 # Import information on gene annotation 
-annot <- read.table("../MBMM25_uploadata/dba_Korg_Ntissue_homer_annot.txt", header=TRUE, sep="\t", comment.char = "", quote="")
+annot <- read.table("../MBMM_uploadata/dba_Korg_Ntissue_homer_annot.txt", header=TRUE, sep="\t", comment.char = "", quote="")
 
 annot <- annot %>% rename("RegionID"= 1)
 head(annot,4) %>% kbl() %>% kable_styling()
@@ -1536,7 +1596,7 @@ In this case we select genomic intervals based on their significance (FDR < 0.01
 diffs <- rbind(volcano_corr[volcano_corr$threshold == "A",], volcano_corr[volcano_corr$threshold == "B",]) %>% rownames()
 
 # Subset matrix for regions of interest
-mtx <- cpm(dds)[diffs,]
+mtx <- cpm(dds, log=TRUE)[diffs,]
 
 # Create another table for annotating the heatmap with colors
 df <- as.data.frame(samples[,c("groups"), drop=FALSE])
