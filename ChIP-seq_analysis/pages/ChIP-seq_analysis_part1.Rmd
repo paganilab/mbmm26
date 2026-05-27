@@ -912,7 +912,7 @@ dds$counts %>%
   merge(., samples, by="SampleID") %>%
   
   # Create boxplots  
-  ggplot(aes(x=SampleID, y=counts, fill=groups)) + 
+  ggplot(aes(x=SampleID, y=counts)) + 
   geom_boxplot(outlier.size = 0.05) + 
   #ylim(0,10000) +
   coord_cartesian(ylim = c(0, 500)) + 
